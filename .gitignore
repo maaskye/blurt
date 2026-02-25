@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+blurt/node_modules/
+blurt/dist/
+blurt/src-tauri/target/

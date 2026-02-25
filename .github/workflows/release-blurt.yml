@@ -1,0 +1,58 @@
+name: Release Blurt Desktop
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'blurt-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows-latest
+            args: ''
+          - platform: macos-latest
+            args: ''
+
+    runs-on: ${{ matrix.platform }}
+
+    defaults:
+      run:
+        working-directory: blurt
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: blurt/package-lock.json
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build and publish with Tauri Action
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: blurt
+          tagName: ${{ github.ref_name }}
+          releaseName: Blurt ${{ github.ref_name }}
+          releaseBody: |
+            Automated Blurt desktop build for Windows and macOS.
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.args }}
