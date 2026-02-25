@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-label="blurt.">
+  <defs>
+    <linearGradient id="blurtWordmark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9a63d2"/>
+      <stop offset="100%" stop-color="#3b63d9"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="180" fill="none"/>
+  <text x="50%" y="57%" text-anchor="middle" font-family="'Luciole', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="128" fill="url(#blurtWordmark)">blurt.</text>
+</svg>
