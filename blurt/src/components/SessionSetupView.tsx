@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 
 type Props = {
   onStart: (payload: { title: string; prompt?: string; durationSec: number }) => void;
+  variant?: 'full' | 'compact';
 };
 
 const MIN_DURATION_MIN = 1;
@@ -11,7 +12,7 @@ const WHEEL_VISIBLE_ROWS = 5;
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-export const SessionSetupView = ({ onStart }: Props) => {
+export const SessionSetupView = ({ onStart, variant = 'full' }: Props) => {
   const [title, setTitle] = useState('');
   const [prompt, setPrompt] = useState('');
   const [durationMin, setDurationMin] = useState(5);
@@ -143,19 +144,23 @@ export const SessionSetupView = ({ onStart }: Props) => {
   };
 
   return (
-    <form className="setup" onSubmit={onSubmit}>
-      <div className="setup-logo-wrap">
-        {!logoErrored ? (
-          <img
-            className="setup-logo"
-            src="/branding/blurt-logo.svg"
-            alt="blurt."
-            onError={() => setLogoErrored(true)}
-          />
-        ) : (
-          <h1 className="setup-logo-fallback">blurt.</h1>
-        )}
-      </div>
+    <form className={`setup ${variant === 'compact' ? 'setup--compact' : ''}`} onSubmit={onSubmit}>
+      {variant === 'full' ? (
+        <div className="setup-logo-wrap">
+          {!logoErrored ? (
+            <img
+              className="setup-logo"
+              src="/branding/blurt-logo.svg"
+              alt="blurt."
+              onError={() => setLogoErrored(true)}
+            />
+          ) : (
+            <h1 className="setup-logo-fallback">blurt.</h1>
+          )}
+        </div>
+      ) : (
+        <h2 className="quickstart-title">Quick Start</h2>
+      )}
       <label>
         Topic / Session Title
         <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g., Experiment Design" />
@@ -177,7 +182,7 @@ export const SessionSetupView = ({ onStart }: Props) => {
         </button>
       </label>
       <button className="primary" type="submit">
-        Lets do this!
+        {variant === 'compact' ? 'Lets Go!' : 'Lets do this!'}
       </button>
 
       {isDurationOpen && (
