@@ -1,6 +1,7 @@
 import html2canvas from 'html2canvas';
 import { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTimer } from '../hooks/useTimer';
+import { useAscendingNotePlayer } from '../hooks/useAscendingNotePlayer';
 import { placeNoteRandomly } from '../utils/placeNoteRandomly';
 import { Session, SessionNote, SessionSummary } from '../types/session';
 
@@ -23,6 +24,7 @@ export const BlurtView = ({ session, onSessionChange, onFinish }: Props) => {
   const [notes, setNotes] = useState<SessionNote[]>(session.notes);
   const canvasRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const { playNext, reset } = useAscendingNotePlayer();
 
   const summary = useMemo(() => {
     const totalNotes = notes.length;
@@ -42,8 +44,9 @@ export const BlurtView = ({ session, onSessionChange, onFinish }: Props) => {
   });
 
   useEffect(() => {
+    reset();
     inputRef.current?.focus();
-  }, []);
+  }, [reset, session.id]);
 
   const addNote = () => {
     const next = text.trim();
@@ -69,6 +72,7 @@ export const BlurtView = ({ session, onSessionChange, onFinish }: Props) => {
     setNotes(nextNotes);
     onSessionChange(nextSession);
     setText('');
+    void playNext();
     inputRef.current?.focus();
   };
 
