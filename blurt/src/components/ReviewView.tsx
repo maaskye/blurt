@@ -1,4 +1,5 @@
 import { MouseEvent, useMemo, useRef, useState } from 'react';
+import { getNoteHeight, GRID_PADDING, MIN_CANVAS_HEIGHT, NOTE_WIDTH } from '../utils/arrangeNotesIntoGrid';
 import { Session, SessionNote, SessionSummary } from '../types/session';
 
 type Props = {
@@ -18,6 +19,11 @@ export const ReviewView = ({ session, summary, onBack, onSave }: Props) => {
     }
     return new Date(session.endedAtMs).toLocaleString();
   }, [session.endedAtMs]);
+
+  const boardHeight = useMemo(() => {
+    const maxBottom = notes.reduce((max, note) => Math.max(max, note.y + getNoteHeight(note.text)), 0);
+    return Math.max(MIN_CANVAS_HEIGHT, maxBottom + GRID_PADDING);
+  }, [notes]);
 
   const beginDrag = (event: MouseEvent<HTMLDivElement>, note: SessionNote) => {
     const rect = (event.target as HTMLDivElement).getBoundingClientRect();
@@ -41,8 +47,11 @@ export const ReviewView = ({ session, summary, onBack, onSave }: Props) => {
 
       return {
         ...note,
-        x: Math.max(0, event.clientX - canvas.left - dragRef.current.offsetX),
-        y: Math.max(0, event.clientY - canvas.top - dragRef.current.offsetY)
+        x: Math.max(0, Math.min(canvas.width - NOTE_WIDTH, event.clientX - canvas.left - dragRef.current.offsetX)),
+        y: Math.max(
+          0,
+          Math.min(canvas.height - getNoteHeight(note.text), event.clientY - canvas.top - dragRef.current.offsetY)
+        )
       };
     });
 
@@ -68,12 +77,18 @@ export const ReviewView = ({ session, summary, onBack, onSave }: Props) => {
         <p>Notes/minute: {summary.notesPerMinute}</p>
       </section>
 
-      <div className="canvas" onMouseMove={onMouseMove} onMouseUp={endDrag} onMouseLeave={endDrag}>
+      <div
+        className="canvas"
+        style={{ minHeight: boardHeight, height: boardHeight }}
+        onMouseMove={onMouseMove}
+        onMouseUp={endDrag}
+        onMouseLeave={endDrag}
+      >
         {notes.map((note) => (
           <div
             key={note.id}
             className="note draggable"
-            style={{ left: note.x, top: note.y }}
+            style={{ left: note.x, top: note.y, height: getNoteHeight(note.text) }}
             onMouseDown={(event) => beginDrag(event, note)}
           >
             {note.text}

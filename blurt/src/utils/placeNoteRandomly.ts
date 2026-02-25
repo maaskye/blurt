@@ -2,7 +2,7 @@ import { SessionNote } from '../types/session';
 
 const PADDING = 20;
 const NOTE_WIDTH = 220;
-const NOTE_HEIGHT = 72;
+const NOTE_HEIGHT = 110;
 const MAX_ATTEMPTS = 120;
 
 type Position = { x: number; y: number };

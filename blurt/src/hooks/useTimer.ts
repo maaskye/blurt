@@ -14,7 +14,16 @@ export const useTimer = (initialSec: number, onComplete: () => void) => {
   });
 
   const onCompleteRef = useRef(onComplete);
+  const completedRef = useRef(false);
   onCompleteRef.current = onComplete;
+
+  const triggerComplete = useCallback(() => {
+    if (completedRef.current) {
+      return;
+    }
+    completedRef.current = true;
+    onCompleteRef.current();
+  }, []);
 
   useEffect(() => {
     if (state.isPaused || state.isComplete) {
@@ -25,7 +34,7 @@ export const useTimer = (initialSec: number, onComplete: () => void) => {
       setState((prev) => {
         if (prev.remainingSec <= 1) {
           window.clearInterval(interval);
-          onCompleteRef.current();
+          triggerComplete();
           return { ...prev, remainingSec: 0, isComplete: true };
         }
 
@@ -34,7 +43,7 @@ export const useTimer = (initialSec: number, onComplete: () => void) => {
     }, 1000);
 
     return () => window.clearInterval(interval);
-  }, [state.isPaused, state.isComplete]);
+  }, [state.isPaused, state.isComplete, triggerComplete]);
 
   const togglePause = useCallback(() => {
     setState((prev) => {
@@ -46,6 +55,7 @@ export const useTimer = (initialSec: number, onComplete: () => void) => {
   }, []);
 
   const reset = useCallback((nextInitialSec: number) => {
+    completedRef.current = false;
     setState({
       remainingSec: nextInitialSec,
       isPaused: false,
@@ -53,9 +63,24 @@ export const useTimer = (initialSec: number, onComplete: () => void) => {
     });
   }, []);
 
+  const completeNow = useCallback(() => {
+    setState((prev) => {
+      if (prev.isComplete) {
+        return prev;
+      }
+      triggerComplete();
+      return {
+        remainingSec: 0,
+        isPaused: false,
+        isComplete: true
+      };
+    });
+  }, [triggerComplete]);
+
   return {
     ...state,
     togglePause,
-    reset
+    reset,
+    completeNow
   };
 };

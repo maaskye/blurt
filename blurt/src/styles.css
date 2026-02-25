@@ -91,11 +91,23 @@ button.active {
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .timer {
   font-size: 1.2rem;
   font-weight: 700;
+}
+
+.danger {
+  background: #d64545;
+  border-color: #bb3232;
+  color: #fff;
+}
+
+.danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .prompt {
@@ -130,12 +142,17 @@ button.active {
 .note {
   position: absolute;
   width: 220px;
-  min-height: 72px;
+  min-height: 110px;
   padding: 10px;
   border-radius: 10px;
   background: #ffffff;
   border: 1px solid #cfdaf7;
   box-shadow: 0 4px 10px rgba(26, 35, 58, 0.12);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  overflow-y: auto;
+  line-height: 1.35;
 }
 
 .draggable {
