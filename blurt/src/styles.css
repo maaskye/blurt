@@ -1,0 +1,143 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #16213a;
+  background: #f5f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.setup,
+.history,
+.blurt-view,
+.review-view {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 12px 24px rgba(24, 36, 60, 0.08);
+  margin-bottom: 16px;
+}
+
+.setup {
+  max-width: 680px;
+  margin: 0 auto 20px;
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  border: 1px solid #d2daf0;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+button {
+  border: 1px solid #ccd7f5;
+  background: #eef2ff;
+  border-radius: 9px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.primary,
+button.active {
+  background: #3b5cff;
+  color: white;
+  border-color: #2d49d4;
+}
+
+.preset-row {
+  display: flex;
+  gap: 10px;
+}
+
+.history-item {
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.blurt-view header,
+.review-view header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.timer {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.prompt {
+  background: #f2f5ff;
+  border-left: 4px solid #3b5cff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.input-row {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.input-row input {
+  width: min(780px, 95%);
+  font-size: 1.3rem;
+  text-align: center;
+  padding: 16px;
+}
+
+.canvas {
+  position: relative;
+  min-height: 460px;
+  border: 2px dashed #c9d4f0;
+  background: #f7f8fc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.note {
+  position: absolute;
+  width: 220px;
+  min-height: 72px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #cfdaf7;
+  box-shadow: 0 4px 10px rgba(26, 35, 58, 0.12);
+}
+
+.draggable {
+  cursor: grab;
+}
