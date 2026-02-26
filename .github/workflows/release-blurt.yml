@@ -18,7 +18,7 @@ jobs:
           - platform: windows-latest
             args: ''
           - platform: macos-latest
-            args: '--bundles app'
+            args: ''
 
     runs-on: ${{ matrix.platform }}
 
@@ -53,7 +53,6 @@ jobs:
           releaseName: Blurt ${{ github.ref_name }}
           releaseBody: |
             Automated Blurt desktop build for Windows and macOS.
-            macOS ships as .app bundle artifact; .dmg packaging is treated as best-effort.
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
