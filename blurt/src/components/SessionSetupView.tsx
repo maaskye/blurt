@@ -1,8 +1,26 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { SessionTemplate } from '../types/template';
+
+type StartPayload = {
+  title: string;
+  prompt?: string;
+  durationSec: number;
+};
+
+type TemplatePayload = {
+  name: string;
+  titleDefault: string;
+  promptDefault?: string;
+  durationSecDefault: number;
+};
 
 type Props = {
-  onStart: (payload: { title: string; prompt?: string; durationSec: number }) => void;
+  onStart: (payload: StartPayload) => void;
   variant?: 'full' | 'compact';
+  templates?: SessionTemplate[];
+  onSaveTemplate?: (payload: TemplatePayload) => Promise<void> | void;
+  onUpdateTemplate?: (id: string, payload: TemplatePayload) => Promise<void> | void;
+  onDeleteTemplate?: (id: string) => Promise<void> | void;
 };
 
 const MIN_DURATION_MIN = 1;
@@ -12,13 +30,22 @@ const WHEEL_VISIBLE_ROWS = 5;
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-export const SessionSetupView = ({ onStart, variant = 'full' }: Props) => {
+export const SessionSetupView = ({
+  onStart,
+  variant = 'full',
+  templates = [],
+  onSaveTemplate,
+  onUpdateTemplate,
+  onDeleteTemplate
+}: Props) => {
   const [title, setTitle] = useState('');
   const [prompt, setPrompt] = useState('');
   const [durationMin, setDurationMin] = useState(5);
   const [isDurationOpen, setIsDurationOpen] = useState(false);
   const [tempDurationMin, setTempDurationMin] = useState(5);
   const [logoErrored, setLogoErrored] = useState(false);
+  const [selectedTemplateId, setSelectedTemplateId] = useState('');
+  const [templateName, setTemplateName] = useState('');
 
   const wheelRef = useRef<HTMLDivElement | null>(null);
   const cancelRef = useRef<HTMLButtonElement | null>(null);
@@ -30,6 +57,21 @@ export const SessionSetupView = ({ onStart, variant = 'full' }: Props) => {
     () => Array.from({ length: MAX_DURATION_MIN }, (_, index) => index + MIN_DURATION_MIN),
     []
   );
+
+  const selectedTemplate = useMemo(
+    () => templates.find((template) => template.id === selectedTemplateId),
+    [selectedTemplateId, templates]
+  );
+
+  useEffect(() => {
+    if (!selectedTemplate) {
+      return;
+    }
+    setTitle(selectedTemplate.titleDefault);
+    setPrompt(selectedTemplate.promptDefault ?? '');
+    setDurationMin(Math.max(1, Math.round(selectedTemplate.durationSecDefault / 60)));
+    setTemplateName(selectedTemplate.name);
+  }, [selectedTemplate]);
 
   const closeDuration = () => {
     setIsDurationOpen(false);
@@ -143,6 +185,17 @@ export const SessionSetupView = ({ onStart, variant = 'full' }: Props) => {
     });
   };
 
+  const templatePayload = (): TemplatePayload => ({
+    name: templateName.trim() || title.trim() || 'Untitled Template',
+    titleDefault: title.trim(),
+    promptDefault: prompt.trim() || undefined,
+    durationSecDefault: durationMin * 60
+  });
+
+  const canSaveTemplate = Boolean(onSaveTemplate && title.trim());
+  const canUpdateTemplate = Boolean(onUpdateTemplate && selectedTemplateId && title.trim());
+  const canDeleteTemplate = Boolean(onDeleteTemplate && selectedTemplateId);
+
   return (
     <form className={`setup ${variant === 'compact' ? 'setup--compact' : ''}`} onSubmit={onSubmit}>
       {variant === 'full' ? (
@@ -161,6 +214,68 @@ export const SessionSetupView = ({ onStart, variant = 'full' }: Props) => {
       ) : (
         <h2 className="quickstart-title">Quick Start</h2>
       )}
+
+      <label>
+        Template
+        <select
+          className="template-select"
+          value={selectedTemplateId}
+          onChange={(event) => setSelectedTemplateId(event.target.value)}
+        >
+          <option value="">None</option>
+          {templates.map((template) => (
+            <option key={template.id} value={template.id}>
+              {template.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        Template Name
+        <input value={templateName} onChange={(event) => setTemplateName(event.target.value)} placeholder="e.g. Statutory Sprint" />
+      </label>
+
+      <div className="template-actions" role="group" aria-label="Template actions">
+        <button
+          type="button"
+          onClick={() => {
+            void onSaveTemplate?.(templatePayload());
+            setTemplateName('');
+            setSelectedTemplateId('');
+          }}
+          disabled={!canSaveTemplate}
+        >
+          Save New
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (!selectedTemplateId) {
+              return;
+            }
+            void onUpdateTemplate?.(selectedTemplateId, templatePayload());
+          }}
+          disabled={!canUpdateTemplate}
+        >
+          Update
+        </button>
+        <button
+          type="button"
+          className="danger"
+          onClick={() => {
+            if (!selectedTemplateId) {
+              return;
+            }
+            void onDeleteTemplate?.(selectedTemplateId);
+            setSelectedTemplateId('');
+          }}
+          disabled={!canDeleteTemplate}
+        >
+          Delete
+        </button>
+      </div>
+
       <label>
         Topic / Session Title
         <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g., Experiment Design" />

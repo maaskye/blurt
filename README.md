@@ -1,29 +1,34 @@
 # Blurt (Tauri + React + TypeScript)
 
-Blurt is a desktop study app that uses the blurting revision technique:
+Blurt is a desktop study app for the blurting revision technique:
 
-1. Set up a timed session.
-2. Type facts into a large central input.
-3. Press Enter to drop each blurt as a random note on the canvas.
-4. Review and drag notes once the timer ends.
+1. Start a timed session.
+2. Type facts and press Enter to drop notes onto the board.
+3. Drag notes while the timer is running.
+4. End naturally or use **Stop Early**.
+5. Review arranged notes and export PNGs.
 
-## Features
+## Current feature set
 
-- **Core flow:** Session Setup → Blurt Mode → Review
-- Countdown timer with pause/resume
+- Dashboard-style home screen with:
+  - latest session **Recents** card and **Continue** action
+  - compact **Quick Start** form
+  - visual nav/sidebar shell
+- Motion system in Blurt view:
+  - inertia drag on release
+  - Enter-submit launch animation into note board
+  - morph-to-grid transition at session finish
+- Session timer with pause/resume and Stop Early
 - Keyboard shortcuts:
   - `Enter`: submit note
   - `Ctrl/Cmd+Z`: undo last note
-  - `Space`: pause/resume timer
-- Random non-overlapping note placement
-- Session summary at end:
-  - total notes
-  - total words
-  - notes/minute
-- Local persistence to JSON files (Tauri app data directory)
-- Past sessions list and reopen in review mode
-- Draggable notes in review mode
-- Export collage canvas to PNG
+- Local persistence in app data:
+  - sessions (`schemaVersion` aware)
+  - session templates
+- Session templates:
+  - save/update/delete template
+  - apply template to quick start fields
+- Export current board and full arranged board to PNG
 
 ## Project structure
 
@@ -34,65 +39,63 @@ blurt/
       SessionSetupView.tsx
       BlurtView.tsx
       ReviewView.tsx
-    hooks/useTimer.ts
-    utils/placeNoteRandomly.ts
-    services/sessionStore.ts
+    hooks/
+    services/
+      sessionStore.ts
+      templateStore.ts
+    utils/
+      placeNoteRandomly.ts
+      arrangeNotesIntoGrid.ts
+      motion.ts
   src-tauri/
+  .github/workflows/release-blurt.yml
 ```
 
+## Release policy
 
-## Downloading Windows `.exe` / `.msi` builds from GitHub
+GitHub workflow: `.github/workflows/release-blurt.yml`
 
-This repository now includes a GitHub Actions workflow at `.github/workflows/release-blurt.yml` that builds desktop bundles and publishes them to GitHub Releases.
+- Trigger: push tag matching `blurt-v*`
+- Windows: default Tauri bundle args
+- macOS: `--bundles app` (predictable)
+- `.dmg` is considered best-effort and not required for a successful release
 
-### One-time setup
-
-1. Push this repository to GitHub.
-2. Ensure Actions are enabled for the repository.
-3. (Optional) If you later add app signing, configure the signing secrets in repository settings.
-
-### Create a release build
-
-Create and push a tag that matches `blurt-v*`:
+### Create a release
 
 ```bash
-git tag blurt-v0.1.0
-git push origin blurt-v0.1.0
+git tag -a blurt-v0.1.7 -m "Blurt v0.1.7"
+git push origin blurt-v0.1.7
 ```
 
-The workflow will:
-- build on **Windows** and **macOS**
-- publish generated installers/artifacts to a GitHub Release
-
-For Windows, users can download installer artifacts (typically `.msi`, and depending on target setup, `.exe`/NSIS-style installer artifacts) directly from that release page.
-
-You can also run the workflow manually from the **Actions** tab via `workflow_dispatch`.
+Then verify:
+- Actions run is green
+- Release has expected Windows + macOS `.app` artifacts
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - Rust toolchain (`rustup`)
-- Tauri dependencies for your OS:
-  - macOS: Xcode Command Line Tools
-  - Windows: Visual Studio Build Tools + WebView2
+- OS dependencies for Tauri
 
-## Setup
+## Local setup
 
 ```bash
 cd blurt
 npm install
 ```
 
-## Run in development
+## Development
 
 ```bash
 npm run tauri dev
 ```
 
-## Build desktop app bundles
+## Verification scripts
 
 ```bash
-npm run tauri build
+npm run smoke
+npm run verify:release
 ```
 
-On macOS this can produce `.app` / `.dmg`, and on Windows `.msi` / `.exe` depending on your environment configuration.
+- `smoke` runs a basic production build.
+- `verify:release` runs build + macOS `.app` bundle validation.

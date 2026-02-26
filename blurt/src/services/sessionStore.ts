@@ -1,6 +1,6 @@
-import { mkdir, readDir, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
+import { mkdir, readDir, readTextFile, remove, writeTextFile } from '@tauri-apps/plugin-fs';
 import { BaseDirectory, join } from '@tauri-apps/api/path';
-import { Session } from '../types/session';
+import { Session, SESSION_SCHEMA_VERSION } from '../types/session';
 
 const SESSION_DIR = 'sessions';
 
@@ -12,11 +12,32 @@ const getSessionPath = async (id: string) => {
   return join(SESSION_DIR, `${id}.json`);
 };
 
+const getTempSessionPath = async (id: string) => {
+  return join(SESSION_DIR, `${id}.json.tmp`);
+};
+
+const normalizeSession = (raw: Session): Session => ({
+  ...raw,
+  schemaVersion: raw.schemaVersion ?? SESSION_SCHEMA_VERSION,
+  notes: raw.notes ?? []
+});
+
 export const sessionStore = {
   async save(session: Session) {
     await ensureSessionDir();
+    const normalized = normalizeSession(session);
+    const payload = JSON.stringify(normalized, null, 2);
     const path = await getSessionPath(session.id);
-    await writeTextFile(path, JSON.stringify(session, null, 2), { baseDir: BaseDirectory.AppData });
+    const tmpPath = await getTempSessionPath(session.id);
+
+    // Write to a temp file first so partially written files never replace valid session files.
+    await writeTextFile(tmpPath, payload, { baseDir: BaseDirectory.AppData });
+    await writeTextFile(path, payload, { baseDir: BaseDirectory.AppData });
+    try {
+      await remove(tmpPath, { baseDir: BaseDirectory.AppData });
+    } catch {
+      // tmp cleanup is best-effort
+    }
   },
 
   async list(): Promise<Session[]> {
@@ -28,7 +49,7 @@ export const sessionStore = {
         .map(async (entry) => {
           const path = await join(SESSION_DIR, entry.name ?? '');
           const content = await readTextFile(path, { baseDir: BaseDirectory.AppData });
-          return JSON.parse(content) as Session;
+          return normalizeSession(JSON.parse(content) as Session);
         })
     );
 
@@ -39,7 +60,7 @@ export const sessionStore = {
     try {
       const path = await getSessionPath(id);
       const content = await readTextFile(path, { baseDir: BaseDirectory.AppData });
-      return JSON.parse(content) as Session;
+      return normalizeSession(JSON.parse(content) as Session);
     } catch {
       return null;
     }

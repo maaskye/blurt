@@ -220,6 +220,29 @@ export const BlurtView = ({ session, onSessionChange, onFinish }: Props) => {
     inputRef.current?.focus();
   }, [clearAnimationResources, reset, session.id]);
 
+  useEffect(() => {
+    const flushSession = () => {
+      if (finishingRef.current) {
+        return;
+      }
+      void onSessionChange({ ...session, notes: notesRef.current });
+    };
+
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') {
+        flushSession();
+      }
+    };
+
+    window.addEventListener('beforeunload', flushSession);
+    document.addEventListener('visibilitychange', onVisibility);
+
+    return () => {
+      window.removeEventListener('beforeunload', flushSession);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [onSessionChange, session]);
+
   const addNote = () => {
     const submitted = text.trim();
     if (!submitted || isComplete || !canvasRef.current) {

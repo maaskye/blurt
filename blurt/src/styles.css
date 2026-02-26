@@ -196,6 +196,27 @@ button.active {
   border-color: #cfd8f9;
 }
 
+.template-select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  background: #fbfcff;
+  color: var(--ink);
+}
+
+.template-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.template-actions button {
+  flex: 1;
+  min-width: 92px;
+}
+
 .duration-trigger-chevron {
   color: #6976aa;
   font-size: 2rem;
@@ -648,7 +669,8 @@ button.active {
 
 .setup--compact input,
 .setup--compact textarea,
-.setup--compact .duration-trigger {
+.setup--compact .duration-trigger,
+.setup--compact .template-select {
   font-size: 1rem;
   border-color: #b7bac7;
   background: #f7f8fb;
@@ -661,6 +683,11 @@ button.active {
 
 .setup--compact .duration-trigger {
   font-size: 1rem;
+}
+
+.setup--compact .template-actions button {
+  font-size: 0.9rem;
+  padding: 6px 8px;
 }
 
 .quickstart-title {

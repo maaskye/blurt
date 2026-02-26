@@ -3,7 +3,9 @@ import { BlurtView } from './components/BlurtView';
 import { ReviewView } from './components/ReviewView';
 import { SessionSetupView } from './components/SessionSetupView';
 import { sessionStore } from './services/sessionStore';
-import { Session, SessionSummary } from './types/session';
+import { templateStore } from './services/templateStore';
+import { Session, SessionSummary, SESSION_SCHEMA_VERSION } from './types/session';
+import { SessionTemplate } from './types/template';
 
 type View = 'setup' | 'blurt' | 'review';
 
@@ -25,6 +27,7 @@ const formatRemaining = (session: Session) => {
 function App() {
   const [view, setView] = useState<View>('setup');
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [templates, setTemplates] = useState<SessionTemplate[]>([]);
   const [activeSession, setActiveSession] = useState<Session | null>(null);
   const [summary, setSummary] = useState<SessionSummary>(emptySummary);
   const [sidebarLogoErrored, setSidebarLogoErrored] = useState(false);
@@ -34,13 +37,20 @@ function App() {
     setSessions(nextSessions);
   };
 
+  const refreshTemplates = async () => {
+    const nextTemplates = await templateStore.list();
+    setTemplates(nextTemplates);
+  };
+
   useEffect(() => {
     void refreshSessions();
+    void refreshTemplates();
   }, []);
 
   const startSession = ({ title, prompt, durationSec }: { title: string; prompt?: string; durationSec: number }) => {
     const session: Session = {
       id: crypto.randomUUID(),
+      schemaVersion: SESSION_SCHEMA_VERSION,
       title,
       prompt,
       durationSec,
@@ -202,7 +212,37 @@ function App() {
           </section>
 
           <aside className="home-quickstart">
-            <SessionSetupView onStart={startSession} variant="compact" />
+            <SessionSetupView
+              onStart={startSession}
+              variant="compact"
+              templates={templates}
+              onSaveTemplate={async (payload) => {
+                await templateStore.save({
+                  id: crypto.randomUUID(),
+                  name: payload.name,
+                  titleDefault: payload.titleDefault,
+                  promptDefault: payload.promptDefault,
+                  durationSecDefault: payload.durationSecDefault,
+                  updatedAtMs: Date.now()
+                });
+                await refreshTemplates();
+              }}
+              onUpdateTemplate={async (id, payload) => {
+                await templateStore.save({
+                  id,
+                  name: payload.name,
+                  titleDefault: payload.titleDefault,
+                  promptDefault: payload.promptDefault,
+                  durationSecDefault: payload.durationSecDefault,
+                  updatedAtMs: Date.now()
+                });
+                await refreshTemplates();
+              }}
+              onDeleteTemplate={async (id) => {
+                await templateStore.remove(id);
+                await refreshTemplates();
+              }}
+            />
           </aside>
         </div>
       )}

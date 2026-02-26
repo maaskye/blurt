@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "smoke": "../scripts/smoke.sh",
+    "verify:release": "../scripts/verify-release.sh"
   },
   "dependencies": {
     "@tauri-apps/api": "2.10.1",

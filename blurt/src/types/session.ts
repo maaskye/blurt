@@ -1,3 +1,5 @@
+export const SESSION_SCHEMA_VERSION = 1;
+
 export type SessionNote = {
   id: string;
   text: string;
@@ -8,6 +10,7 @@ export type SessionNote = {
 
 export type Session = {
   id: string;
+  schemaVersion?: number;
   title: string;
   prompt?: string;
   durationSec: number;
