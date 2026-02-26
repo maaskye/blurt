@@ -5,6 +5,7 @@ on:
   push:
     tags:
       - 'blurt-v*'
+      - 'blUpdate-v*'
 
 permissions:
   contents: write
@@ -30,6 +31,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Derive release metadata
+        id: release_meta
+        shell: bash
+        run: |
+          REF_NAME="${GITHUB_REF_NAME}"
+          if [[ "$REF_NAME" == blurt-v* ]]; then
+            RELEASE_NAME="blUpdate-${REF_NAME#blurt-}"
+          elif [[ "$REF_NAME" == blUpdate-v* ]]; then
+            RELEASE_NAME="$REF_NAME"
+          else
+            RELEASE_NAME="$REF_NAME"
+          fi
+          echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,9 +65,9 @@ jobs:
         with:
           projectPath: blurt
           tagName: ${{ github.ref_name }}
-          releaseName: Blurt ${{ github.ref_name }}
+          releaseName: ${{ steps.release_meta.outputs.release_name }}
           releaseBody: |
-            Automated Blurt desktop build for Windows and macOS.
+            Automated Blurt desktop build hotfix/release for Windows and macOS.
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
