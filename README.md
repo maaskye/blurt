@@ -1,3 +1,6 @@
+![blurt_logo](https://github.com/user-attachments/assets/2ff1b231-3afa-4976-95a9-4b0d6315312e)
+
+
 # blurt.
 
 A desktop revision app for the blurting method.
