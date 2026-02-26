@@ -1,101 +1,92 @@
-# Blurt (Tauri + React + TypeScript)
+# blurt.
 
-Blurt is a desktop study app for the blurting revision technique:
+A desktop app for blurting revision sessions, built with Tauri + React + TypeScript.
 
-1. Start a timed session.
-2. Type facts and press Enter to drop notes onto the board.
-3. Drag notes while the timer is running.
-4. End naturally or use **Stop Early**.
-5. Review arranged notes and export PNGs.
+[![Latest Release](https://img.shields.io/github/v/release/Correxxt/blurt?display_name=tag&sort=semver)](https://github.com/Correxxt/blurt/releases)
+[![Release Workflow](https://img.shields.io/github/actions/workflow/status/Correxxt/blurt/release-blurt.yml?label=release)](https://github.com/Correxxt/blurt/actions/workflows/release-blurt.yml)
+[![License](https://img.shields.io/github/license/Correxxt/blurt)](./LICENSE)
 
-## Current feature set
-
-- Dashboard-style home screen with:
-  - latest session **Recents** card and **Continue** action
-  - compact **Quick Start** form
-  - visual nav/sidebar shell
-- Motion system in Blurt view:
-  - inertia drag on release
-  - Enter-submit launch animation into note board
-  - morph-to-grid transition at session finish
-- Session timer with pause/resume and Stop Early
-- Keyboard shortcuts:
-  - `Enter`: submit note
-  - `Ctrl/Cmd+Z`: undo last note
-- Local persistence in app data:
-  - sessions (`schemaVersion` aware)
-  - session templates
-- Session templates:
-  - save/update/delete template
-  - apply template to quick start fields
-- Export current board and full arranged board to PNG
-
-## Project structure
-
-```txt
-blurt/
-  src/
-    components/
-      SessionSetupView.tsx
-      BlurtView.tsx
-      ReviewView.tsx
-    hooks/
-    services/
-      sessionStore.ts
-      templateStore.ts
-    utils/
-      placeNoteRandomly.ts
-      arrangeNotesIntoGrid.ts
-      motion.ts
-  src-tauri/
-  .github/workflows/release-blurt.yml
-```
-
-## Release policy
-
-GitHub workflow: `.github/workflows/release-blurt.yml`
-
-- Trigger: push tag matching `blurt-v*`
-- Windows: default Tauri bundle args
-- macOS: `--bundles app` (predictable)
-- `.dmg` is considered best-effort and not required for a successful release
-
-### Create a release
+## Quick Start (60 seconds)
 
 ```bash
-git tag -a blurt-v0.1.7 -m "Blurt v0.1.7"
-git push origin blurt-v0.1.7
-```
-
-Then verify:
-- Actions run is green
-- Release has expected Windows + macOS `.app` artifacts
-
-## Prerequisites
-
-- Node.js 20+
-- Rust toolchain (`rustup`)
-- OS dependencies for Tauri
-
-## Local setup
-
-```bash
-cd blurt
+git clone https://github.com/Correxxt/blurt.git
+cd blurt/blurt
 npm install
-```
-
-## Development
-
-```bash
 npm run tauri dev
 ```
 
-## Verification scripts
+## What Is In This Repo
+
+| Path | Purpose |
+| --- | --- |
+| `blurt/` | Desktop app source (React frontend + Tauri backend shell). |
+| `docs/` | QA checklist, release checklist, troubleshooting, and docs assets. |
+| `scripts/` | Local verification scripts (`smoke`, `verify-release`). |
+| `.github/workflows/` | GitHub Actions release pipeline. |
+
+## Features
+
+### User-Facing
+- Dashboard home screen with Recents and Quick Start.
+- Timed blurting sessions with Enter-to-add notes.
+- Note drag with motion effects.
+- Stop Early control and review mode.
+- PNG export (view and full board).
+
+### Developer-Facing
+- Local smoke and release verification scripts.
+- Release automation through GitHub Actions.
+- Structured QA and release checklists.
+- Changelog-driven release notes workflow.
+
+## Release Flow
+
+Preferred tag format (stable/hotfix):
 
 ```bash
-npm run smoke
-npm run verify:release
+git tag -a blUpdate-vX.Y.Z -m "blUpdate vX.Y.Z"
+git push origin blUpdate-vX.Y.Z
 ```
 
-- `smoke` runs a basic production build.
-- `verify:release` runs build + macOS `.app` bundle validation.
+Legacy tag format is still supported:
+
+```bash
+git tag -a blurt-vX.Y.Z -m "Blurt vX.Y.Z"
+git push origin blurt-vX.Y.Z
+```
+
+Release workflow behavior:
+- Trigger: tag push matching `blUpdate-v*` or `blurt-v*`.
+- Release title: uses the exact tag name automatically.
+- Required artifacts: Windows bundle(s) + macOS `.app`.
+- `.dmg`: optional best-effort artifact.
+
+## Known Limits / Current Caveats
+
+- Persistence behavior may differ between `npm run dev` and packaged app context.
+- macOS bundle identifier currently ends in `.app` (warning only, should be cleaned up later).
+- Non-home nav sections are still iterating and may change quickly between releases.
+
+## Docs Index
+
+- [Contributing Guide](./CONTRIBUTING.md)
+- [Changelog](./CHANGELOG.md)
+- [Troubleshooting](./docs/TROUBLESHOOTING.md)
+- [QA Checklist](./docs/QA_CHECKLIST.md)
+- [Release Checklist](./docs/RELEASE_CHECKLIST.md)
+
+## Screenshots
+
+Reference image paths (place files in `docs/assets/`):
+- `docs/assets/home.png`
+- `docs/assets/session.png`
+- `docs/assets/review.png`
+- `docs/assets/note-flow.gif` (optional)
+
+Example markdown:
+
+```md
+![Home](docs/assets/home.png)
+![Session](docs/assets/session.png)
+![Review](docs/assets/review.png)
+```

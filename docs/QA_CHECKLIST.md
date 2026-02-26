@@ -5,10 +5,10 @@
 - [ ] Latest session appears in Recents card
 - [ ] Continue opens unfinished session in Blurt view
 - [ ] Continue opens finished session in Review view
-- [ ] Template save/apply/update/delete works
 - [ ] Duration wheel opens and commits chosen minute
+- [ ] Quick Start starts exactly one session per click/Enter
 
-## Blurt session
+## Blurt Session
 
 - [ ] Enter submits note
 - [ ] Ctrl/Cmd+Z undoes latest note
@@ -16,13 +16,23 @@
 - [ ] Stop Early ends session
 - [ ] Finish morphs notes into grid
 
-## Persistence
+## Review
+
+- [ ] Review loads from finished session route
+- [ ] Notes can be repositioned in review
+- [ ] Summary metrics render correctly
+
+## Persistence (Current Target Behavior)
 
 - [ ] Reopen app and previous sessions still exist
-- [ ] Final dragged positions persisted
-- [ ] Templates persisted
+- [ ] Final note positions persist after session end
 
 ## Export
 
 - [ ] Export View PNG succeeds
 - [ ] Export Full PNG succeeds
+
+## Release Candidate Sanity
+
+- [ ] No unintended tracked file changes in `git status`
+- [ ] Manual checks match release notes scope

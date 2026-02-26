@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'blurt-v*'
       - 'blUpdate-v*'
+      - 'blurt-v*'
 
 permissions:
   contents: write
@@ -67,7 +67,11 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: ${{ steps.release_meta.outputs.release_name }}
           releaseBody: |
-            Automated Blurt desktop build hotfix/release for Windows and macOS.
+            Automated Blurt desktop release for Windows and macOS.
+
+            Artifact policy:
+            - Required: Windows artifacts + macOS `.app`
+            - Optional (best-effort): macOS `.dmg`
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
