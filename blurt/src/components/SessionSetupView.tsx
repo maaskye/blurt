@@ -215,66 +215,140 @@ export const SessionSetupView = ({
         <h2 className="quickstart-title">Quick Start</h2>
       )}
 
-      <label>
-        Template
-        <select
-          className="template-select"
-          value={selectedTemplateId}
-          onChange={(event) => setSelectedTemplateId(event.target.value)}
-        >
-          <option value="">None</option>
-          {templates.map((template) => (
-            <option key={template.id} value={template.id}>
-              {template.name}
-            </option>
-          ))}
-        </select>
-      </label>
+      {variant === 'compact' ? (
+        <details className="template-tools">
+          <summary>Templates</summary>
+          <div className="template-tools-body">
+            <label>
+              Template
+              <select
+                className="template-select"
+                value={selectedTemplateId}
+                onChange={(event) => setSelectedTemplateId(event.target.value)}
+              >
+                <option value="">None</option>
+                {templates.map((template) => (
+                  <option key={template.id} value={template.id}>
+                    {template.name}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-      <label>
-        Template Name
-        <input value={templateName} onChange={(event) => setTemplateName(event.target.value)} placeholder="e.g. Statutory Sprint" />
-      </label>
+            <label>
+              Template Name
+              <input
+                value={templateName}
+                onChange={(event) => setTemplateName(event.target.value)}
+                placeholder="e.g. Statutory Sprint"
+              />
+            </label>
 
-      <div className="template-actions" role="group" aria-label="Template actions">
-        <button
-          type="button"
-          onClick={() => {
-            void onSaveTemplate?.(templatePayload());
-            setTemplateName('');
-            setSelectedTemplateId('');
-          }}
-          disabled={!canSaveTemplate}
-        >
-          Save New
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            if (!selectedTemplateId) {
-              return;
-            }
-            void onUpdateTemplate?.(selectedTemplateId, templatePayload());
-          }}
-          disabled={!canUpdateTemplate}
-        >
-          Update
-        </button>
-        <button
-          type="button"
-          className="danger"
-          onClick={() => {
-            if (!selectedTemplateId) {
-              return;
-            }
-            void onDeleteTemplate?.(selectedTemplateId);
-            setSelectedTemplateId('');
-          }}
-          disabled={!canDeleteTemplate}
-        >
-          Delete
-        </button>
-      </div>
+            <div className="template-actions" role="group" aria-label="Template actions">
+              <button
+                type="button"
+                onClick={() => {
+                  void onSaveTemplate?.(templatePayload());
+                  setTemplateName('');
+                  setSelectedTemplateId('');
+                }}
+                disabled={!canSaveTemplate}
+              >
+                Save New
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!selectedTemplateId) {
+                    return;
+                  }
+                  void onUpdateTemplate?.(selectedTemplateId, templatePayload());
+                }}
+                disabled={!canUpdateTemplate}
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                className="danger"
+                onClick={() => {
+                  if (!selectedTemplateId) {
+                    return;
+                  }
+                  void onDeleteTemplate?.(selectedTemplateId);
+                  setSelectedTemplateId('');
+                }}
+                disabled={!canDeleteTemplate}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </details>
+      ) : (
+        <>
+          <label>
+            Template
+            <select
+              className="template-select"
+              value={selectedTemplateId}
+              onChange={(event) => setSelectedTemplateId(event.target.value)}
+            >
+              <option value="">None</option>
+              {templates.map((template) => (
+                <option key={template.id} value={template.id}>
+                  {template.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Template Name
+            <input value={templateName} onChange={(event) => setTemplateName(event.target.value)} placeholder="e.g. Statutory Sprint" />
+          </label>
+
+          <div className="template-actions" role="group" aria-label="Template actions">
+            <button
+              type="button"
+              onClick={() => {
+                void onSaveTemplate?.(templatePayload());
+                setTemplateName('');
+                setSelectedTemplateId('');
+              }}
+              disabled={!canSaveTemplate}
+            >
+              Save New
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (!selectedTemplateId) {
+                  return;
+                }
+                void onUpdateTemplate?.(selectedTemplateId, templatePayload());
+              }}
+              disabled={!canUpdateTemplate}
+            >
+              Update
+            </button>
+            <button
+              type="button"
+              className="danger"
+              onClick={() => {
+                if (!selectedTemplateId) {
+                  return;
+                }
+                void onDeleteTemplate?.(selectedTemplateId);
+                setSelectedTemplateId('');
+              }}
+              disabled={!canDeleteTemplate}
+            >
+              Delete
+            </button>
+          </div>
+        </>
+      )}
 
       <label>
         Topic / Session Title

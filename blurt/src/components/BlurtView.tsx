@@ -1,5 +1,6 @@
 import html2canvas from 'html2canvas';
 import { KeyboardEvent, MouseEvent as ReactMouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Download, Pause, Play, Plus, StopCircle } from 'lucide-react';
 import { useTimer } from '../hooks/useTimer';
 import { useAscendingNotePlayer } from '../hooks/useAscendingNotePlayer';
 import {
@@ -502,78 +503,140 @@ export const BlurtView = ({ session, onSessionChange, onFinish }: Props) => {
   };
 
   return (
-    <div className="blurt-view" onKeyDown={onKeyDown} tabIndex={0}>
-      <header>
-        <h2>{session.title}</h2>
-        <div className="controls">
-          <span className="timer">{formatTime(remainingSec)}</span>
-          <button onClick={togglePause}>{isPaused ? 'Resume' : 'Pause'}</button>
-          <button className="danger" onClick={completeNow} disabled={isComplete}>
-            Stop Early
+    <div
+      className="mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-[1480px] flex-col overflow-hidden rounded-3xl border border-[#d8deed] bg-[#f3f5fb] shadow-[0_20px_40px_rgba(17,27,55,0.1)]"
+      onKeyDown={onKeyDown}
+      tabIndex={0}
+    >
+      <header className="border-b border-[#d7ddee] bg-white px-8 py-6">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="truncate text-3xl font-semibold text-[#1a2340]">{session.title}</h2>
+          <span
+            className={`text-5xl font-bold tabular-nums ${
+              isComplete
+                ? 'text-[#a3abc6]'
+                : isPaused
+                  ? 'text-[#b98517]'
+                  : 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent'
+            }`}
+          >
+            {formatTime(remainingSec)}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {!isComplete && (
+            <>
+              <button
+                className="inline-flex items-center gap-2 rounded-lg border border-[#d2d7e8] bg-[#f2f4fb] px-4 py-2 font-medium text-[#1d2848] hover:bg-[#e8ecf7]"
+                onClick={togglePause}
+              >
+                {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+                {isPaused ? 'Resume' : 'Pause'}
+              </button>
+              <button
+                className="inline-flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2 font-medium text-red-700 hover:bg-red-100"
+                onClick={completeNow}
+                disabled={isComplete}
+              >
+                <StopCircle className="h-4 w-4" />
+                Stop Early
+              </button>
+            </>
+          )}
+          <div className="flex-1" />
+          <button
+            className="inline-flex items-center gap-2 rounded-lg border border-[#d2d7e8] bg-white px-4 py-2 font-medium text-[#1d2848] hover:bg-[#f4f6fc]"
+            onClick={exportViewport}
+          >
+            <Download className="h-4 w-4" />
+            Export View PNG
           </button>
-          <button onClick={exportViewport}>Export View PNG</button>
-          <button onClick={exportFullBoard}>Export Full PNG</button>
+          <button
+            className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 px-4 py-2 font-medium text-white hover:shadow-lg"
+            onClick={exportFullBoard}
+          >
+            <Download className="h-4 w-4" />
+            Export Full PNG
+          </button>
         </div>
       </header>
 
-      {session.prompt && <p className="prompt">{session.prompt}</p>}
+      <div className="flex flex-1 flex-col overflow-hidden p-8">
+        {session.prompt && <p className="mb-4 rounded-xl border border-[#d6ddf0] bg-[#eef2ff] px-4 py-3 text-[#2f3f69]">{session.prompt}</p>}
 
-      <div className="input-row">
-        <input
-          ref={inputRef}
-          disabled={isComplete}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              addNote();
-            }
-          }}
-          placeholder="Type a fact and press Enter"
-        />
-      </div>
-
-      <div
-        ref={canvasRef}
-        className={`canvas ${isReducedMotion ? 'motion-reduced' : ''}`}
-        style={{ minHeight: MIN_CANVAS_HEIGHT }}
-        onMouseMove={onMouseMove}
-        onMouseUp={endDrag}
-        onMouseLeave={endDrag}
-      >
-        <div className="launch-layer" aria-hidden>
-          {launchGhosts.map((ghost) => (
-            <div
-              key={`ghost-${ghost.id}`}
-              className="launch-ghost"
-              style={{
-                left: ghost.x,
-                top: ghost.y,
-                width: NOTE_WIDTH,
-                transform: `scale(${ghost.scale})`,
-                opacity: ghost.opacity,
-                filter: `blur(${ghost.blurPx}px)`
+        <div className="mb-6">
+          <div className="relative mx-auto max-w-4xl">
+            <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
+              <Plus className={`h-5 w-5 ${isComplete ? 'text-neutral-300' : 'text-purple-500'}`} />
+            </div>
+            <input
+              ref={inputRef}
+              disabled={isComplete}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  addNote();
+                }
               }}
+              placeholder={isComplete ? 'Session completed' : 'Type a fact and press Enter'}
+              className={`w-full rounded-xl border-2 py-4 pl-12 pr-24 text-lg transition-all ${
+                isComplete
+                  ? 'cursor-not-allowed border-neutral-200 bg-neutral-100 text-neutral-400'
+                  : 'border-neutral-200 bg-white hover:border-purple-300 focus:border-purple-400 focus:outline-none focus:ring-4 focus:ring-purple-100'
+              }`}
+            />
+            {!isComplete && (
+              <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-neutral-400">
+                Press Enter
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div
+          ref={canvasRef}
+          className={`canvas flex-1 rounded-2xl border-2 border-[#d8ddea] bg-white shadow-inner ${isReducedMotion ? 'motion-reduced' : ''}`}
+          style={{ minHeight: MIN_CANVAS_HEIGHT }}
+          onMouseMove={onMouseMove}
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
+        >
+          <div className="launch-layer" aria-hidden>
+            {launchGhosts.map((ghost) => (
+              <div
+                key={`ghost-${ghost.id}`}
+                className="launch-ghost"
+                style={{
+                  left: ghost.x,
+                  top: ghost.y,
+                  width: NOTE_WIDTH,
+                  transform: `scale(${ghost.scale})`,
+                  opacity: ghost.opacity,
+                  filter: `blur(${ghost.blurPx}px)`
+                }}
+              >
+                {ghost.text}
+              </div>
+            ))}
+          </div>
+          {notes.map((note) => (
+            <div
+              key={note.id}
+              className={`note ${isComplete ? '' : 'draggable'} ${
+                noteFxMap[note.id]?.isDragging ? 'note--dragging' : ''
+              } ${noteFxMap[note.id]?.isInertia ? 'note--inertia' : ''} ${
+                noteFxMap[note.id]?.isSettle ? 'note--settle' : ''
+              } ${hiddenNotes[note.id] ? 'note--hidden' : ''}`}
+              style={{ left: note.x, top: note.y, height: getNoteHeight(note.text) }}
+              onMouseDown={(event) => beginDrag(event, note)}
             >
-              {ghost.text}
+              {note.text}
             </div>
           ))}
         </div>
-        {notes.map((note) => (
-          <div
-            key={note.id}
-            className={`note ${isComplete ? '' : 'draggable'} ${
-              noteFxMap[note.id]?.isDragging ? 'note--dragging' : ''
-            } ${noteFxMap[note.id]?.isInertia ? 'note--inertia' : ''} ${
-              noteFxMap[note.id]?.isSettle ? 'note--settle' : ''
-            } ${hiddenNotes[note.id] ? 'note--hidden' : ''}`}
-            style={{ left: note.x, top: note.y, height: getNoteHeight(note.text) }}
-            onMouseDown={(event) => beginDrag(event, note)}
-          >
-            {note.text}
-          </div>
-        ))}
       </div>
     </div>
   );

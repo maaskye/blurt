@@ -64,13 +64,18 @@ export const ReviewView = ({ session, summary, onBack, onSave }: Props) => {
   };
 
   return (
-    <div className="review-view">
-      <header>
-        <h2>Review Session</h2>
-        <button onClick={onBack}>Back to Setup</button>
+    <div className="mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-[1480px] flex-col overflow-hidden rounded-3xl border border-[#d8deed] bg-[#f3f5fb] shadow-[0_20px_40px_rgba(17,27,55,0.1)]">
+      <header className="flex items-center justify-between border-b border-[#d7ddee] bg-white px-8 py-6">
+        <h2 className="text-3xl font-semibold text-[#1a2340]">Review Session</h2>
+        <button
+          className="rounded-lg border border-[#d2d7e8] bg-[#f2f4fb] px-4 py-2 font-medium text-[#1d2848] hover:bg-[#e8ecf7]"
+          onClick={onBack}
+        >
+          Back to Setup
+        </button>
       </header>
 
-      <section className="summary">
+      <section className="grid grid-cols-2 gap-3 border-b border-[#d7ddee] bg-[#eef2ff] px-8 py-4 text-[#2f3f69] md:grid-cols-4">
         <p>Completed: {endedAtText}</p>
         <p>Total notes: {summary.totalNotes}</p>
         <p>Total words: {summary.totalWords}</p>
@@ -78,7 +83,7 @@ export const ReviewView = ({ session, summary, onBack, onSave }: Props) => {
       </section>
 
       <div
-        className="canvas"
+        className="canvas m-8 mt-6 rounded-2xl border-2 border-[#d8ddea] bg-white shadow-inner"
         style={{ minHeight: boardHeight, height: boardHeight }}
         onMouseMove={onMouseMove}
         onMouseUp={endDrag}

@@ -16,6 +16,7 @@
 
 body {
   margin: 0;
+  color: var(--ink);
 }
 
 main {
@@ -45,7 +46,7 @@ main {
 label {
   display: grid;
   gap: 8px;
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #10172b;
 }
@@ -61,7 +62,7 @@ textarea {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px 14px;
-  font-size: 1.6rem;
+  font-size: 1rem;
   color: var(--ink);
   background: #fbfcff;
 }
@@ -91,7 +92,7 @@ button.active {
 
 .setup .primary {
   margin-top: 8px;
-  font-size: 1.7rem;
+  font-size: 1.05rem;
   padding: 12px 16px;
   border-radius: 13px;
   isolation: isolate;
@@ -176,7 +177,7 @@ button.active {
 
 .setup-logo-fallback {
   margin: 0;
-  font-size: 5.4rem;
+  font-size: 3rem;
   letter-spacing: 0.5px;
   background: linear-gradient(120deg, var(--brand-violet), var(--brand-indigo));
   -webkit-background-clip: text;
@@ -189,7 +190,7 @@ button.active {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.7rem;
+  font-size: 1rem;
   padding: 12px 14px;
   border-radius: 12px;
   background: #fbfcff;
@@ -206,6 +207,26 @@ button.active {
   color: var(--ink);
 }
 
+.template-tools {
+  border: 1px solid #ccd3ea;
+  border-radius: 10px;
+  background: #f8f9ff;
+  padding: 8px 10px;
+}
+
+.template-tools summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #293258;
+}
+
+.template-tools-body {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
 .template-actions {
   display: flex;
   gap: 8px;
@@ -219,7 +240,7 @@ button.active {
 
 .duration-trigger-chevron {
   color: #6976aa;
-  font-size: 2rem;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
@@ -245,7 +266,7 @@ button.active {
 .duration-modal h3 {
   margin: 4px 0 14px;
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.1rem;
 }
 
 .duration-wheel {
@@ -263,7 +284,7 @@ button.active {
   border: 0;
   background: transparent;
   border-radius: 10px;
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #5f6a99;
   scroll-snap-align: center;
@@ -297,11 +318,11 @@ button.active {
 
 .history h3 {
   margin-top: 0;
-  font-size: 2.8rem;
+  font-size: 1.4rem;
 }
 
 .history p {
-  font-size: 1.7rem;
+  font-size: 1rem;
   color: #2f3a5e;
 }
 
@@ -420,14 +441,14 @@ button.active {
 /* Home Dashboard (Setup View) */
 .home-layout {
   display: grid;
-  grid-template-columns: 250px minmax(520px, 1fr) 330px;
-  gap: 24px;
+  grid-template-columns: 230px minmax(540px, 1fr) 320px;
+  gap: 26px;
   align-items: start;
 }
 
 .home-sidebar {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   position: sticky;
   top: 18px;
 }
@@ -439,27 +460,38 @@ button.active {
 }
 
 .sidebar-menu-toggle {
+  width: 24px;
+  height: 18px;
   border: 0;
   background: transparent;
   box-shadow: none;
   transform: none;
   padding: 0;
-  color: #505775;
-  font-size: 2rem;
+  display: grid;
+  align-content: space-between;
 }
 
-.sidebar-menu-toggle:hover {
+.sidebar-menu-toggle span {
+  width: 20px;
+  height: 2px;
+  background: #505775;
+  border-radius: 999px;
+}
+
+.sidebar-menu-toggle:hover,
+.sidebar-menu-toggle:focus-visible {
   box-shadow: none;
   transform: none;
+  opacity: 0.82;
 }
 
 .sidebar-logo {
-  width: 118px;
+  width: 124px;
   height: auto;
 }
 
 .sidebar-logo-fallback {
-  font-size: 3.4rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #6d59c9;
 }
@@ -477,7 +509,7 @@ button.active {
 
 .sidebar-group h3 {
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   color: #2a3352;
 }
 
@@ -492,8 +524,15 @@ button.active {
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
-  font-size: 1.85rem;
+  font-size: 1.05rem;
   color: #1f2440;
+}
+
+.sidebar-item-icon {
+  display: inline-flex;
+  width: 18px;
+  justify-content: center;
+  font-size: 1rem;
 }
 
 .sidebar-item:hover {
@@ -524,11 +563,11 @@ button.active {
   justify-items: center;
   gap: 4px;
   color: #1f2440;
-  font-size: 2.8rem;
+  font-size: 1.7rem;
 }
 
 .sidebar-avatar-btn span {
-  font-size: 1.7rem;
+  font-size: 0.95rem;
 }
 
 .sidebar-avatar-btn:hover {
@@ -536,21 +575,42 @@ button.active {
   transform: none;
 }
 
+.avatar-dot {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid #c9cce0;
+  background: #f0f2fb;
+}
+
 .home-main {
   display: grid;
-  gap: 18px;
+  gap: 20px;
 }
 
 .home-panel-title {
   margin: 0;
-  font-size: 4rem;
+  font-size: 2.2rem;
+  font-weight: 700;
 }
 
 .recents-card {
-  border: 2px solid #b9bcc7;
+  border: 2px solid #bec3d3;
   border-radius: 15px;
   padding: 16px 18px;
   background: #eceef3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.recents-content {
+  min-width: 0;
+  flex: 1;
 }
 
 .recents-header {
@@ -562,19 +622,23 @@ button.active {
 
 .recents-header h3 {
   margin: 0;
-  font-size: 4rem;
+  font-size: 2rem;
   color: #7d5ec6;
 }
 
 .recents-header span {
-  font-size: 3.2rem;
+  font-size: 1.1rem;
   color: #12192e;
+  white-space: nowrap;
 }
 
 .recents-topic {
-  margin: 6px 0 10px;
-  font-size: 2.4rem;
+  margin: 8px 0 12px;
+  font-size: 1rem;
   color: #2f3450;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .recents-meta {
@@ -584,26 +648,34 @@ button.active {
 }
 
 .recents-meta strong {
-  font-size: 3.4rem;
+  font-size: 1.6rem;
   color: #8a66c4;
 }
 
 .recents-cta {
   min-width: 120px;
+  font-size: 1rem;
   color: #fff;
   background: #5d6484;
   border-color: #555c7a;
 }
 
+.recents-illustration {
+  font-size: 3.2rem;
+  color: #b6bbe2;
+  user-select: none;
+  line-height: 1;
+}
+
 .recents-card--empty h3 {
   margin: 0;
-  font-size: 3rem;
+  font-size: 1.3rem;
   color: #2a3351;
 }
 
 .recents-card--empty p {
   margin: 8px 0 0;
-  font-size: 1.8rem;
+  font-size: 1rem;
 }
 
 .quick-grid-panel {
@@ -616,7 +688,7 @@ button.active {
 
 .quick-grid-plus {
   color: #0e123f;
-  font-size: 14rem;
+  font-size: 6rem;
   line-height: 1;
   font-weight: 700;
 }
@@ -639,7 +711,7 @@ button.active {
   background: #e8eaef;
   border-radius: 14px;
   min-height: 82px;
-  font-size: 6rem;
+  font-size: 2.2rem;
   color: #676b87;
 }
 
@@ -663,7 +735,7 @@ button.active {
 }
 
 .setup--compact label {
-  font-size: 1.1rem;
+  font-size: 1rem;
   gap: 6px;
 }
 
@@ -692,14 +764,14 @@ button.active {
 
 .quickstart-title {
   margin: 0 0 2px;
-  font-size: 2.3rem;
+  font-size: 2rem;
   color: #1b2240;
 }
 
 .setup--compact .primary {
-  width: 64%;
+  width: 68%;
   justify-self: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 7px 12px;
   margin-top: 6px;
 }
@@ -713,7 +785,7 @@ button.active {
 }
 
 .history--home h3 {
-  font-size: 2.4rem;
+  font-size: 1.3rem;
 }
 
 @media (max-width: 1180px) {
@@ -730,6 +802,18 @@ button.active {
     grid-template-columns: 1fr;
     justify-items: start;
     gap: 10px;
+  }
+
+  .recents-card {
+    display: grid;
+  }
+
+  .home-sidebar {
+    position: static;
+  }
+
+  .sidebar-footer {
+    justify-content: flex-start;
   }
 
   .quick-grid-divider {
