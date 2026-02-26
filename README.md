@@ -1,92 +1,70 @@
 # blurt.
 
-A desktop app for blurting revision sessions, built with Tauri + React + TypeScript.
+A desktop revision app for the blurting method.
 
 [![Latest Release](https://img.shields.io/github/v/release/Correxxt/blurt?display_name=tag&sort=semver)](https://github.com/Correxxt/blurt/releases)
-[![Release Workflow](https://img.shields.io/github/actions/workflow/status/Correxxt/blurt/release-blurt.yml?label=release)](https://github.com/Correxxt/blurt/actions/workflows/release-blurt.yml)
 [![License](https://img.shields.io/github/license/Correxxt/blurt)](./LICENSE)
 
-## Quick Start (60 seconds)
+## What blurt helps you do
 
-```bash
-git clone https://github.com/Correxxt/blurt.git
-cd blurt/blurt
-npm install
-npm run tauri dev
-```
+- Run a timed blurting session.
+- Add ideas quickly by pressing `Enter`.
+- Move notes around your board.
+- End early when you are done.
+- Review everything in one clean view.
 
-## What Is In This Repo
+## Download
 
-| Path | Purpose |
-| --- | --- |
-| `blurt/` | Desktop app source (React frontend + Tauri backend shell). |
-| `docs/` | QA checklist, release checklist, troubleshooting, and docs assets. |
-| `scripts/` | Local verification scripts (`smoke`, `verify-release`). |
-| `.github/workflows/` | GitHub Actions release pipeline. |
+Get the latest version from [Releases](https://github.com/Correxxt/blurt/releases).
 
-## Features
+Look for:
+- **macOS**: `.dmg` or `.app.tar.gz`
+- **Windows**: `.exe` or `.msi`
 
-### User-Facing
-- Dashboard home screen with Recents and Quick Start.
-- Timed blurting sessions with Enter-to-add notes.
-- Note drag with motion effects.
-- Stop Early control and review mode.
-- PNG export (view and full board).
+## Install
 
-### Developer-Facing
-- Local smoke and release verification scripts.
-- Release automation through GitHub Actions.
-- Structured QA and release checklists.
-- Changelog-driven release notes workflow.
+### macOS
+1. Download the latest macOS build from Releases.
+2. Open the `.dmg` (or extract `.app.tar.gz` if needed).
+3. Drag **Blurt.app** into **Applications**.
+4. Open Blurt from Applications.
 
-## Release Flow
+### Windows
+1. Download the latest `.exe` or `.msi` from Releases.
+2. Run the installer.
+3. Open Blurt from Start Menu/Desktop.
 
-Preferred tag format (stable/hotfix):
+## How to use
 
-```bash
-git tag -a blUpdate-vX.Y.Z -m "blUpdate vX.Y.Z"
-git push origin blUpdate-vX.Y.Z
-```
+1. Open **Quick Start**.
+2. Add your topic/session title.
+3. Choose a duration.
+4. Press **Lets Go!**.
+5. Type a fact and press `Enter` to add notes.
+6. Drag notes while the timer runs.
+7. Press **Stop Early** or let the timer end.
+8. Review and export if needed.
 
-Legacy tag format is still supported:
+## Keyboard shortcuts
 
-```bash
-git tag -a blurt-vX.Y.Z -m "Blurt vX.Y.Z"
-git push origin blurt-vX.Y.Z
-```
+- `Enter` → add note
+- `Ctrl/Cmd + Z` → undo last note
 
-Release workflow behavior:
-- Trigger: tag push matching `blUpdate-v*` or `blurt-v*`.
-- Release title: uses the exact tag name automatically.
-- Required artifacts: Windows bundle(s) + macOS `.app`.
-- `.dmg`: optional best-effort artifact.
+## Current status
 
-## Known Limits / Current Caveats
+blurt is actively improving. UI and flows may be updated between releases.
 
-- Persistence behavior may differ between `npm run dev` and packaged app context.
-- macOS bundle identifier currently ends in `.app` (warning only, should be cleaned up later).
-- Non-home nav sections are still iterating and may change quickly between releases.
+## Need help?
 
-## Docs Index
+If something is not working, open an issue here:
+- [Report a bug](https://github.com/Correxxt/blurt/issues)
+
+## For developers
+
+Technical/project docs are kept separately:
 
 - [Contributing Guide](./CONTRIBUTING.md)
 - [Changelog](./CHANGELOG.md)
 - [Troubleshooting](./docs/TROUBLESHOOTING.md)
 - [QA Checklist](./docs/QA_CHECKLIST.md)
 - [Release Checklist](./docs/RELEASE_CHECKLIST.md)
-
-## Screenshots
-
-Reference image paths (place files in `docs/assets/`):
-- `docs/assets/home.png`
-- `docs/assets/session.png`
-- `docs/assets/review.png`
-- `docs/assets/note-flow.gif` (optional)
-
-Example markdown:
-
-```md
-![Home](docs/assets/home.png)
-![Session](docs/assets/session.png)
-![Review](docs/assets/review.png)
-```
