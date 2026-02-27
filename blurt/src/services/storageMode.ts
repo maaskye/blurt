@@ -1,6 +1,6 @@
 export type StorageMode = 'local' | 'cloud' | 'hybrid';
 
-const DEFAULT_MODE: StorageMode = 'local';
+const DEFAULT_MODE: StorageMode = 'cloud';
 
 export const getStorageMode = (): StorageMode => {
   const rawMode = (import.meta.env.VITE_STORAGE_MODE ?? DEFAULT_MODE).toLowerCase();

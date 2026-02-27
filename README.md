@@ -57,19 +57,21 @@ Look for:
 
 blurt is actively improving. UI and flows may be updated between releases.
 
-## Cloud Sync (optional)
+## Cloud Sync
 
 blurt can run in three storage modes:
 
-- `local` (default): local AppData files only
-- `cloud`: Supabase cloud-only sync (requires login)
+- `cloud` (default): Supabase cloud sync (requires login)
+- `local`: local AppData files only
 - `hybrid`: cloud primary + local mirror
 
-To enable cloud mode:
+For most users, no setup is needed (cloud is default in released builds).
+
+To override mode or use your own Supabase project (developer setup):
 
 1. Copy `blurt/.env.example` to `blurt/.env`
 2. Set:
-   - `VITE_STORAGE_MODE=cloud` (or `hybrid`)
+   - `VITE_STORAGE_MODE=cloud|local|hybrid`
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
    - `VITE_SUPABASE_REDIRECT_URL=blurt://auth/callback`
