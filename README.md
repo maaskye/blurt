@@ -5,8 +5,8 @@
 
 A desktop revision app for the blurting method.
 
-[![Latest Release](https://img.shields.io/github/v/release/Correxxt/blurt?display_name=tag&sort=semver)](https://github.com/Correxxt/blurt/releases)
-[![License](https://img.shields.io/github/license/Correxxt/blurt)](./LICENSE)
+[![Latest Release](https://img.shields.io/github/v/release/maaskye/blurt?display_name=tag&sort=semver)](https://github.com/maaskye/blurt/releases)
+[![License](https://img.shields.io/github/license/maaskye/blurt)](./LICENSE)
 
 ## What blurt helps you do
 
@@ -18,7 +18,7 @@ A desktop revision app for the blurting method.
 
 ## Download
 
-Get the latest version from [Releases](https://github.com/Correxxt/blurt/releases).
+Get the latest version from [Releases](https://github.com/maaskye/blurt/releases).
 
 Look for:
 - **macOS**: `.dmg` or `.app.tar.gz`
@@ -60,7 +60,7 @@ blurt is actively improving. UI and flows may be updated between releases.
 ## Need help?
 
 If something is not working, open an issue here:
-- [Report a bug](https://github.com/Correxxt/blurt/issues)
+- [Report a bug](https://github.com/maaskye/blurt/issues)
 
 ## For developers
 
