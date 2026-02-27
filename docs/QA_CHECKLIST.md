@@ -27,6 +27,15 @@
 - [ ] Reopen app and previous sessions still exist
 - [ ] Final note positions persist after session end
 
+## Cloud Sync (when `VITE_STORAGE_MODE=cloud` or `hybrid`)
+
+- [ ] Login screen appears when signed out
+- [ ] Magic link sign-in allows app access
+- [ ] Session save appears in Supabase `sessions` table
+- [ ] Template CRUD appears in Supabase `templates` table
+- [ ] Offline launch shows cached data as read-only
+- [ ] Reconnect restores write ability
+
 ## Export
 
 - [ ] Export View PNG succeeds

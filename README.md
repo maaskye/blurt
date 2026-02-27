@@ -57,6 +57,31 @@ Look for:
 
 blurt is actively improving. UI and flows may be updated between releases.
 
+## Cloud Sync (optional)
+
+blurt can run in three storage modes:
+
+- `local` (default): local AppData files only
+- `cloud`: Supabase cloud-only sync (requires login)
+- `hybrid`: cloud primary + local mirror
+
+To enable cloud mode:
+
+1. Copy `blurt/.env.example` to `blurt/.env`
+2. Set:
+   - `VITE_STORAGE_MODE=cloud` (or `hybrid`)
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_SUPABASE_REDIRECT_URL=blurt://auth/callback`
+3. Run `npm run tauri dev` from `blurt/`
+
+Database schema and RLS setup:
+- [Supabase Setup Guide](./docs/SUPABASE_SETUP.md)
+
+Auth in cloud mode:
+- Email magic link / email code
+- SMS code (if phone provider is configured in Supabase)
+
 ## Need help?
 
 If something is not working, open an issue here:
@@ -71,3 +96,4 @@ Technical/project docs are kept separately:
 - [Troubleshooting](./docs/TROUBLESHOOTING.md)
 - [QA Checklist](./docs/QA_CHECKLIST.md)
 - [Release Checklist](./docs/RELEASE_CHECKLIST.md)
+- [Supabase Setup](./docs/SUPABASE_SETUP.md)

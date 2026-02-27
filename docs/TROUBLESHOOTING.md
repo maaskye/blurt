@@ -76,7 +76,31 @@ Notes:
   ```
 - Always test critical persistence flows in both contexts before release.
 
-## 7) Clean reset to latest release tag
+## 7) Cloud mode shows login/setup screen and app does not continue
+
+Checks:
+1. Confirm `blurt/.env` exists.
+2. Confirm values are set:
+   - `VITE_STORAGE_MODE=cloud` (or `hybrid`)
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+3. Confirm Email OTP / magic link is enabled in Supabase.
+4. Confirm tables and RLS are created correctly:
+   - [Supabase Setup](./SUPABASE_SETUP.md)
+
+## 8) Cloud mode is read-only
+
+Possible causes:
+1. You are offline.
+2. You are signed out or auth session expired.
+3. Supabase rejected a write (RLS/policy mismatch).
+
+Checks:
+1. Reconnect to internet.
+2. Sign in again with magic link.
+3. Verify RLS policies in [Supabase Setup](./SUPABASE_SETUP.md).
+
+## 9) Clean reset to latest release tag
 
 From repo root:
 

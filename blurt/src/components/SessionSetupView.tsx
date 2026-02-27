@@ -15,12 +15,14 @@ type TemplatePayload = {
 };
 
 type Props = {
-  onStart: (payload: StartPayload) => void;
+  onStart: (payload: StartPayload) => void | Promise<void>;
   variant?: 'full' | 'compact';
   templates?: SessionTemplate[];
   onSaveTemplate?: (payload: TemplatePayload) => Promise<void> | void;
   onUpdateTemplate?: (id: string, payload: TemplatePayload) => Promise<void> | void;
   onDeleteTemplate?: (id: string) => Promise<void> | void;
+  startDisabled?: boolean;
+  startError?: string | null;
 };
 
 const MIN_DURATION_MIN = 1;
@@ -36,7 +38,9 @@ export const SessionSetupView = ({
   templates = [],
   onSaveTemplate,
   onUpdateTemplate,
-  onDeleteTemplate
+  onDeleteTemplate,
+  startDisabled = false,
+  startError = null
 }: Props) => {
   const [title, setTitle] = useState('');
   const [prompt, setPrompt] = useState('');
@@ -174,11 +178,11 @@ export const SessionSetupView = ({
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (!title.trim()) {
+    if (!title.trim() || startDisabled) {
       return;
     }
 
-    onStart({
+    void onStart({
       title: title.trim(),
       prompt: prompt.trim() || undefined,
       durationSec: durationMin * 60
@@ -370,9 +374,10 @@ export const SessionSetupView = ({
           <span className="duration-trigger-chevron">▾</span>
         </button>
       </label>
-      <button className="primary" type="submit">
+      <button className="primary" type="submit" disabled={startDisabled || !title.trim()}>
         {variant === 'compact' ? 'Lets Go!' : 'Lets do this!'}
       </button>
+      {startError && <p className="text-sm text-red-600 mt-1">{startError}</p>}
 
       {isDurationOpen && (
         <div className="duration-modal-overlay" onMouseDown={closeDuration}>
