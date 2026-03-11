@@ -7,6 +7,10 @@ A desktop revision app for the blurting method.
 
 [![Latest Release](https://img.shields.io/github/v/release/maaskye/blurt?display_name=tag&sort=semver)](https://github.com/maaskye/blurt/releases)
 [![License](https://img.shields.io/github/license/maaskye/blurt)](./LICENSE)
+![downloads](https://img.shields.io/github/downloads/maaskye/blurt/total)
+![last commit](https://img.shields.io/github/last-commit/maaskye/blurt)
+![platform](https://img.shields.io/badge/platform-macOS-lightgrey)
+![platform](https://img.shields.io/badge/platform-Windows-grey)
 
 <img width="2560" height="400" alt="blurtrepo-text" src="https://github.com/user-attachments/assets/719fd486-554e-44fb-b4fe-3470f1238836" />
 
