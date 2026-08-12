@@ -5,10 +5,10 @@
 
 A desktop revision app for the blurting method.
 
-[![Latest Release](https://img.shields.io/github/v/release/maaskye/blurt?display_name=tag&sort=semver)](https://github.com/maaskye/blurt/releases)
-[![License](https://img.shields.io/github/license/maaskye/blurt)](./LICENSE)
-![downloads](https://img.shields.io/github/downloads/maaskye/blurt/total)
-![last commit](https://img.shields.io/github/last-commit/maaskye/blurt)
+[![Latest Release](https://img.shields.io/github/v/release/Correxxt/blurt?display_name=tag&sort=semver)](https://github.com/Correxxt/blurt/releases)
+[![License](https://img.shields.io/github/license/Correxxt/blurt)](./LICENSE)
+![downloads](https://img.shields.io/github/downloads/Correxxt/blurt/total)
+![last commit](https://img.shields.io/github/last-commit/Correxxt/blurt)
 ![platform](https://img.shields.io/badge/platform-macOS-lightgrey)
 ![platform](https://img.shields.io/badge/platform-Windows-grey)
 
@@ -22,7 +22,7 @@ A desktop revision app for the blurting method.
 
 <img width="2560" height="400" alt="blurtrepo-text (1)" src="https://github.com/user-attachments/assets/21776dc6-fb6e-415f-9520-d3090834fd1f" />
 
-**Get the latest version from** [Releases](https://github.com/maaskye/blurt/releases).
+**Get the latest version from** [Releases](https://github.com/Correxxt/blurt/releases).
 
 Look for:
 - **macOS**: `.dmg` or `.app.tar.gz`
@@ -91,7 +91,7 @@ Auth in cloud mode:
 <img width="2560" height="400" alt="blurtrepo-text (5)" src="https://github.com/user-attachments/assets/f9d4aaf4-ffbc-44c0-bb24-4e2adc7e2a31" />
 
 If something is not working, open an issue here:
-- [Report a bug](https://github.com/maaskye/blurt/issues)
+- [Report a bug](https://github.com/Correxxt/blurt/issues)
 
 <img width="2560" height="400" alt="blurtrepo-text (6)" src="https://github.com/user-attachments/assets/1503eca7-0ebc-4360-8726-ad81fb709827" />
 

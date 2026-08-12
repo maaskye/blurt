@@ -18,7 +18,6 @@ npm run tauri dev
 
 Use descriptive branches. Preferred patterns:
 - `main` for production-ready code.
-- `codex/<topic>` for assistant-generated work.
 - `feature/<topic>` or `fix/<topic>` for manual work.
 
 ## Commit Message Style
